@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>socorro</title>
+
+    <style>
+        #cena{
+            position: relative;
+            width: 1080px;
+            height: 720px;
+       
+        }
+        #cena img{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        #arbusto{
+            z-index: 2;
+            position: absolute;
+            height: 75px;
+            width: 75px;
+            //border: 1px solid red;
+            background-color: transparent;
+            left: 245px;
+            top:480px;
+
+        }
+    </style>
+
+</head>
+<body>
+    <div id="cena">
+
+        <img id="unico" src="/imagens_finais/fase01/inicial.png" alt="Um prédio cizento em um bosque a noite. Na frente há dois arbustos, um na direita e outro na esquerda, e um pouco mais distante ainda tem uma única árvore que encostada ao prédio..">
+        <div id="arbusto" onclick="clicar()"></div>
+    </div>
+    
+    
+    <script>
+        let cont = 0;
+        let escrever = document.getElementById("unico");
+
+        function clicar(){
+            cont++;
+            //alert(cont);
+
+            if(cont == 1){
+                escrever.src = "/imagens_finais/fase01/alavanca.png";
+
+            }
+
+            if(cont == 2){
+                escrever.src = "/imagens_finais/fase01/aberta.png";
+            }
+
+
+            
+        }
+    </script>
+    
+</body>
+</html>
