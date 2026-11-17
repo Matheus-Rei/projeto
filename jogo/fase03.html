@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase do Elevador</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #cena {
+            position: relative;
+            width: min(100vw, calc(100vh * 1648 / 928));
+            aspect-ratio: 1648 / 928;
+            overflow: hidden;
+        }
+
+        #imagem, #manchete {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        #imagem {
+            z-index: 1;
+        }
+
+        button {
+            position: absolute;
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        #botao-elevador {
+            z-index: 2;
+            left: 71.6%;
+            top: 46.3%;
+            width: 3%;
+            height: 5%;
+        }
+
+        #queijo {
+            z-index: 2;
+            left: 43%;
+            top: 70%;
+            width: 6%;
+            height: 10%;
+            display: none;
+        }
+
+        #jornal {
+            z-index: 2;
+            left: 49%;
+            top: 70%;
+            width: 12%;
+            height: 10%;
+            display: none;
+        }
+
+        #manchete {
+            z-index: 3;
+            display: none;
+        }
+
+        #fechar {
+            z-index: 4;
+            left: 18.5%;
+            top: 7.5%;
+            width: 5%;
+            height: 8%;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            #cena {
+                width: 100vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="cena">
+        <img id="imagem" src="../imagens_finais/fase01/Elevador Industrial Abandonado.png" alt="Elevador">
+
+        <button id="botao-elevador" onclick="abrirElevador()"></button>
+        <button id="queijo" onclick="clicarQueijo()"></button>
+        <button id="jornal" onclick="abrirManchete()"></button>
+
+        <img id="manchete" src="../imagens_finais/fase01/manchete.png" alt="Manchete do jornal">
+        <button id="fechar" onclick="fecharManchete()"></button>
+    </div>
+
+    <script>
+        const pasta = "../imagens_finais/fase01/";
+        const imagem = document.getElementById("imagem");
+        const botao = document.getElementById("botao-elevador");
+        const queijo = document.getElementById("queijo");
+        const jornal = document.getElementById("jornal");
+        const manchete = document.getElementById("manchete");
+        const fechar = document.getElementById("fechar");
+
+        function abrirElevador() {
+            imagem.src = pasta + "Queijo brilhante no elevador sombrio.png";
+            botao.style.display = "none";
+            queijo.style.display = "block";
+            jornal.style.display = "block";
+        }
+
+        function clicarQueijo() {
+            imagem.src = pasta + "Elevador Industrial com Jornal O diário.png";
+            queijo.style.display = "none";
+        }
+
+        function abrirManchete() {
+            manchete.style.display = "block";
+            fechar.style.display = "block";
+        }
+
+        function fecharManchete() {
+            manchete.style.display = "none";
+            fechar.style.display = "none";
+        }
+    </script>
+</body>
+</html>

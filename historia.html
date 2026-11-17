@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo Morto</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #111713;
+            color: #ddd;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            padding: 100px 10%;
+            background: linear-gradient(#0009, #111713),
+                        url("imagens/laboratorio.jpg") center/cover;
+        }
+
+        h1 {
+            font-size: 55px;
+            color: #a2c18e;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 17px;
+            color: #ccc;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        h2 {
+            color: #a2c18e;
+            border-bottom: 1px solid #405342;
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.8;
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        .historia {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .texto-historia {
+            flex: 2;
+        }
+
+        .imagem-rato {
+            flex: 1;
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: contain;
+            border: none;
+            margin: 0;
+        }
+
+        .galeria {
+            display: flex;
+            gap: 20px;
+        }
+
+        .galeria img {
+            width: 50%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #718071;
+            background: #19221b;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 700px) {
+            h1 {
+                font-size: 38px;
+            }
+
+            header {
+                padding: 80px 25px;
+            }
+
+            .historia {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .imagem-rato {
+                width: 65%;
+                max-width: 250px;
+            }
+
+            .galeria {
+                flex-direction: column;
+            }
+
+            .galeria img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>nome do jogo</h1>
+        <p>Alguns casos nunca deveriam ter sido encerrados.</p>
+    </header>
+
+    <main>
+
+        <section class="historia">
+
+            <div class="texto-historia">
+                <h2>História</h2>
+
+                <p>
+                    Durante meses, diversos casos de desaparecimento vêm sendo
+                    arquivados sem explicações ou investigações adequadas. Para a
+                    maioria, são apenas ocorrências sem solução. Mas um policial
+                    começa a perceber um padrão estranho por trás desses casos e
+                    suspeita que algo muito maior esteja acontecendo.
+                </p>
+
+                <p>
+                    Decidido a descobrir a verdade, ele inicia uma investigação
+                    por conta própria. Suas pistas o levam até um antigo
+                    laboratório, onde encontra evidências de experimentos
+                    clandestinos conduzidos por um cientista que invadiu as
+                    instalações.
+                </p>
+
+                <p>
+                    Utilizando ratos como cobaias, o pesquisador desenvolveu
+                    experimentos capazes de transformá-los em verdadeiras bombas
+                    vivas. Após avanços significativos, decidiu expandir suas
+                    pesquisas para seres humanos.
+                </p>
+
+                <p>
+                    O que o policial ainda não sabe é que os desaparecimentos
+                    fazem parte de uma operação cuidadosamente planejada.
+                    Policiais infiltrados na própria corporação são responsáveis
+                    por sequestrar as vítimas e garantir que seus casos sejam
+                    arquivados, protegendo os experimentos de qualquer investigação.
+                </p>
+
+                <p>
+                    Agora, quanto mais próximo chega da verdade, mais perigosa
+                    se torna sua investigação.
+                </p>
+            </div>
+
+            <img
+                class="imagem-rato"
+                src="imagens_finais/fase01/istockphoto-1404283051-612x612.png"
+                alt="Rato utilizado nos experimentos"
+            >
+
+        </section>
+
+    </main>
+
+    <footer>
+       nome do jogo
+    </footer>
+
+</body>
+</html>
