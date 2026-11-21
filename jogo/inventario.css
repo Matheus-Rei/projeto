@@ -1,0 +1,67 @@
+#inventario {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    font-family: Arial, sans-serif;
+}
+
+#botao-inventario {
+    width: 55px;
+    height: 55px;
+    border: 2px solid #777;
+    border-radius: 8px;
+    background: #171717;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#painel-inventario {
+    display: none;
+    position: absolute;
+    top: 65px;
+    right: 0;
+    width: 230px;
+    min-height: 130px;
+    padding: 15px;
+    background: #171717;
+    border: 2px solid #777;
+    border-radius: 8px;
+    color: white;
+}
+
+#painel-inventario.aberto {
+    display: block;
+}
+
+#painel-inventario h3 {
+    margin: 0 0 15px;
+    font-size: 16px;
+    text-align: center;
+}
+
+#itens-inventario {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item-inventario {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #292929;
+    border: 1px solid #555;
+    border-radius: 6px;
+    font-size: 32px;
+}
+
+#inventario-vazio {
+    width: 100%;
+    color: #999;
+    font-size: 13px;
+    text-align: center;
+}

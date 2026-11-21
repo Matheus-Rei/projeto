@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fase do Elevador</title>
 
-    <link rel="stylesheet" href="../CSS/ratos.css">
+    <link rel="stylesheet" href="../css/ratos.css">
+    <link rel="stylesheet" href="inventario.css">
 
     <style>
         * {
@@ -44,7 +45,7 @@
             z-index: 1;
         }
 
-        button {
+        #cena button {
             position: absolute;
             background: transparent;
             border: none;
@@ -171,7 +172,17 @@
 
     </div>
 
+    <div id="inventario">
+        <button id="botao-inventario" onclick="abrirInventario()">🎒</button>
+
+        <div id="painel-inventario">
+            <h3>INVENTÁRIO</h3>
+            <div id="itens-inventario"></div>
+        </div>
+    </div>
+
     <script src="../java.js/ratt.js"></script>
+    <script src="inventario.js"></script>
 
     <script>
         const pasta = "../imagens_finais/fase01/";
@@ -202,13 +213,22 @@
 
             imagem.src = pasta + "Queijo brilhante no elevador sombrio.png";
             botao.style.display = "none";
-            queijo.style.display = "block";
+
+            if (!possuiItem("queijo")) {
+                queijo.style.display = "block";
+            }
+
             jornal.style.display = "block";
 
             iniciarRatos();
         }
 
         function clicarQueijo() {
+            adicionarItem({
+                nome: "queijo",
+                icone: "🧀"
+            });
+
             imagem.src = pasta + "Elevador Industrial com Jornal O diário.png";
             queijo.style.display = "none";
         }

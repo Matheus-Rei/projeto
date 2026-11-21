@@ -5,8 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fase 2</title>
+
     <link rel="stylesheet" href="fase02.css">
+    <link rel="stylesheet" href="inventario.css">
+
     <script src="fase02.js" defer></script>
+    <script src="inventario.js" defer></script>
 </head>
 
 <body>
@@ -18,8 +22,14 @@
         >
 
         <button id="botao-carta" onclick="abrirCarta()" aria-label="Abrir carta"></button>
+
         <button id="botao-gerador" onclick="abrirGerador()" aria-label="Examinar gerador"></button>
+
         <button id="botao-escada" onclick="subirEscada()" aria-label="Subir escadaria"></button>
+
+        <button id="botao-chave" onclick="coletarChave()" aria-label="Coletar chave">
+            🔑
+        </button>
     </main>
 
     <div id="modal-carta" onclick="fecharCartaFundo(event)">
@@ -30,11 +40,11 @@
                 alt="Carta do cientista"
             >
 
-            <button id="fechar" onclick="fecharCarta()" aria-label="Fechar"></button>
+            <button id="fechar" onclick="fecharCarta()" aria-label="Fechar carta"></button>
         </div>
     </div>
 
-    <div id="modal-gerador">
+    <div id="modal-gerador" onclick="fecharGeradorFundo(event)">
         <section id="painel-gerador">
 
             <div id="topo-painel">
@@ -109,6 +119,15 @@
             </div>
 
         </section>
+    </div>
+
+    <div id="inventario">
+        <button id="botao-inventario" onclick="abrirInventario()">🎒</button>
+
+        <div id="painel-inventario">
+            <h3>INVENTÁRIO</h3>
+            <div id="itens-inventario"></div>
+        </div>
     </div>
 </body>
 </html>

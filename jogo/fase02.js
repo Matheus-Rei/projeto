@@ -1,26 +1,19 @@
 
-const botaoCarta = document.getElementById("botao-carta");
 const modalCarta = document.getElementById("modal-carta");
-const fecharCartaBotao = document.getElementById("fechar");
-
-const botaoGerador = document.getElementById("botao-gerador");
 const modalGerador = document.getElementById("modal-gerador");
-const fecharGeradorBotao = document.getElementById("fechar-gerador");
-
-const botaoEscada = document.getElementById("botao-escada");
 
 const origens = document.querySelectorAll("#origens .fio");
 const destinos = document.querySelectorAll("#destinos .fio");
+
 const placa = document.getElementById("placa");
 const svg = document.getElementById("fios-svg");
 const mensagem = document.getElementById("mensagem-puzzle");
 
 const sucesso = document.getElementById("sucesso-gerador");
-const continuar = document.getElementById("continuar-gerador");
-const reiniciar = document.getElementById("reiniciar-puzzle");
 
 let fioSelecionado = null;
 let conexoes = {};
+
 let geradorAtivado = sessionStorage.getItem("geradorAtivado") === "true";
 
 const cores = {
@@ -50,14 +43,24 @@ function abrirGerador() {
     if (geradorAtivado) {
         sucesso.classList.add("aberto");
     }
+
+    setTimeout(function() {
+        desenharFios();
+    }, 50);
 }
 
 function fecharGerador() {
     modalGerador.classList.remove("aberto");
 }
 
+function fecharGeradorFundo(evento) {
+    if (evento.target === modalGerador) {
+        fecharGerador();
+    }
+}
+
 function continuarGerador() {
-    modalGerador.classList.remove("aberto");
+    fecharGerador();
 }
 
 function subirEscada() {
@@ -65,9 +68,7 @@ function subirEscada() {
 }
 
 function selecionarFio(fio) {
-    if (geradorAtivado) {
-        return;
-    }
+    if (geradorAtivado) return;
 
     const cor = fio.dataset.color;
 
@@ -82,9 +83,7 @@ function selecionarFio(fio) {
 }
 
 function conectarFio(terminal) {
-    if (!fioSelecionado || geradorAtivado) {
-        return;
-    }
+    if (!fioSelecionado || geradorAtivado) return;
 
     const corDestino = terminal.dataset.color;
 
@@ -141,6 +140,8 @@ function desenharFios() {
 
     const area = placa.getBoundingClientRect();
 
+    if (area.width === 0 || area.height === 0) return;
+
     svg.setAttribute("viewBox", `0 0 ${area.width} ${area.height}`);
 
     for (let corOrigem in conexoes) {
@@ -161,9 +162,7 @@ function desenharFios() {
             }
         }
 
-        if (origem === null || destino === null) {
-            continue;
-        }
+        if (origem === null || destino === null) continue;
 
         const pontoOrigem = origem.querySelector(".terminal").getBoundingClientRect();
         const pontoDestino = destino.querySelector(".terminal").getBoundingClientRect();
@@ -190,6 +189,7 @@ function desenharFios() {
 
 function ativarGerador() {
     geradorAtivado = true;
+
     sessionStorage.setItem("geradorAtivado", "true");
 
     mensagem.textContent = "Todas as conexões foram realizadas.";
@@ -200,9 +200,7 @@ function ativarGerador() {
 }
 
 function resetarPuzzle() {
-    if (geradorAtivado) {
-        return;
-    }
+    if (geradorAtivado) return;
 
     conexoes = {};
     fioSelecionado = null;

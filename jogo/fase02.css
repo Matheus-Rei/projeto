@@ -66,6 +66,26 @@ body {
     z-index: 3;
 }
 
+/* CHAVE */
+
+#botao-chave {
+    position: absolute;
+    left: 52%;
+    top: 76%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-size: clamp(25px, 3vw, 42px);
+    cursor: pointer;
+    z-index: 4;
+    filter: drop-shadow(0 2px 4px #000);
+    transition: transform 0.2s;
+}
+
+#botao-chave:hover {
+    transform: scale(1.2);
+}
+
 #modal-carta,
 #modal-gerador {
     display: none;
