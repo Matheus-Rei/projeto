@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 2</title>
+    <link rel="stylesheet" href="fase02.css">
+    <script src="fase02.js" defer></script>
+</head>
+
+<body>
+    <main id="cena">
+        <img
+            id="cenario"
+            src="../imagens_finais/fase01/Elevador Enferrujado no Subsolo Industrial.png"
+            alt="Cenário do laboratório"
+        >
+
+        <button id="botao-carta" aria-label="Abrir carta"></button>
+        <button id="botao-gerador" aria-label="Examinar gerador"></button>
+        <button id="botao-escada" aria-label="Subir escadaria"></button>
+    </main>
+
+    <div id="modal-carta">
+        <div id="area-imagem-carta">
+            <img
+                id="imagem-carta"
+                src="../imagens_finais/fase01/carta.png"
+                alt="Carta do cientista"
+            >
+
+            <button id="fechar" aria-label="Fechar carta"></button>
+        </div>
+    </div>
+
+    <div id="modal-gerador">
+        <section id="painel-gerador">
+
+            <div id="topo-painel">
+                <h2>PAINEL ELÉTRICO</h2>
+                <button id="fechar-gerador" aria-label="Fechar">X</button>
+            </div>
+
+            <p id="instrucao">
+                Reconecte os fios para restabelecer a energia.
+            </p>
+
+            <div id="placa">
+                <svg id="fios-svg"></svg>
+
+                <div class="coluna-fios" id="origens">
+                    <button class="fio vermelho" data-color="vermelho">
+                        <span class="terminal"></span>
+                        Fio 01
+                    </button>
+
+                    <button class="fio azul" data-color="azul">
+                        <span class="terminal"></span>
+                        Fio 02
+                    </button>
+
+                    <button class="fio amarelo" data-color="amarelo">
+                        <span class="terminal"></span>
+                        Fio 03
+                    </button>
+
+                    <button class="fio verde" data-color="verde">
+                        <span class="terminal"></span>
+                        Fio 04
+                    </button>
+                </div>
+
+                <div class="coluna-fios" id="destinos">
+                    <button class="fio verde" data-color="verde">
+                        Terminal D
+                        <span class="terminal"></span>
+                    </button>
+
+                    <button class="fio amarelo" data-color="amarelo">
+                        Terminal C
+                        <span class="terminal"></span>
+                    </button>
+
+                    <button class="fio vermelho" data-color="vermelho">
+                        Terminal A
+                        <span class="terminal"></span>
+                    </button>
+
+                    <button class="fio azul" data-color="azul">
+                        Terminal B
+                        <span class="terminal"></span>
+                    </button>
+                </div>
+            </div>
+
+            <p id="mensagem-puzzle">
+                Selecione uma ponta de fio.
+            </p>
+
+            <div id="controles-puzzle">
+                <button id="reiniciar-puzzle">Reiniciar</button>
+            </div>
+
+            <div id="sucesso-gerador">
+                <h2>ENERGIA RESTABELECIDA</h2>
+                <p>O gerador voltou a funcionar.</p>
+                <button id="continuar-gerador">Continuar</button>
+            </div>
+
+        </section>
+    </div>
+</body>
+</html>

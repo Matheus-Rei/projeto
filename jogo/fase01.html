@@ -6,61 +6,97 @@
     <title>socorro</title>
 
     <style>
-        #cena{
-            position: relative;
-            width: 1080px;
-            height: 720px;
-       
+        * {
+            box-sizing: border-box;
         }
-        #cena img{
+
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        #cena {
+            position: relative;
+            width: min(100vw, calc(100dvh * 1.5));
+            aspect-ratio: 3 / 2;
+        }
+
+        #cena img {
             position: absolute;
             width: 100%;
             height: 100%;
             z-index: 1;
         }
-        #arbusto{
-            z-index: 2;
-            position: absolute;
-            height: 75px;
-            width: 75px;
-            //border: 1px solid red;
-            background-color: transparent;
-            left: 245px;
-            top:480px;
 
+        #arbusto {
+            position: absolute;
+            width: 6.95%;
+            height: 10.42%;
+            background: transparent;
+            left: 22.69%;
+            top: 66.67%;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        #transicao {
+            position: fixed;
+            inset: 0;
+            background: black;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+            transition: opacity 1.5s ease;
+        }
+
+        #transicao.ativa {
+            opacity: 1;
         }
     </style>
-
 </head>
-<body>
-    <div id="cena">
 
-        <img id="unico" src="/imagens_finais/fase01/inicial.png" alt="Um prédio cizento em um bosque a noite. Na frente há dois arbustos, um na direita e outro na esquerda, e um pouco mais distante ainda tem uma única árvore que encostada ao prédio..">
+<body>
+
+    <div id="cena">
+        <img id="unico" src="/imagens_finais/fase01/inicial.png" alt="Um prédio cinzento em um bosque à noite.">
+
         <div id="arbusto" onclick="clicar()"></div>
     </div>
-    
-    
+
+    <div id="transicao"></div>
+
     <script>
         let cont = 0;
         let escrever = document.getElementById("unico");
 
-        function clicar(){
+        function clicar() {
             cont++;
-            //alert(cont);
 
-            if(cont == 1){
+            if (cont == 1) {
                 escrever.src = "/imagens_finais/fase01/alavanca.png";
-
             }
 
-            if(cont == 2){
+            if (cont == 2) {
                 escrever.src = "/imagens_finais/fase01/aberta.png";
+
+                setTimeout(() => {
+                    document.getElementById("transicao").classList.add("ativa");
+
+                    setTimeout(() => {
+                        window.location.href = "fase2.html";
+                    }, 1500);
+
+                }, 800);
             }
-
-
-            
         }
     </script>
-    
+
 </body>
 </html>

@@ -1,0 +1,355 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    background: #080808;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#cena {
+    position: relative;
+    width: min(100vw, calc(100dvh * 1648 / 928));
+    aspect-ratio: 1648 / 928;
+    overflow: hidden;
+}
+
+#cenario {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#botao-carta {
+    position: absolute;
+    left: 69.5%;
+    top: 56%;
+    width: 7%;
+    height: 5%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 3;
+}
+
+#botao-gerador {
+    position: absolute;
+    left: 5%;
+    top: 25%;
+    width: 30%;
+    height: 60%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 3;
+}
+
+#botao-escada {
+    position: absolute;
+    left: 78%;
+    top: 24%;
+    width: 22%;
+    height: 58%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    z-index: 3;
+}
+
+#modal-carta,
+#modal-gerador {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+#modal-carta.aberto,
+#modal-gerador.aberto {
+    display: flex;
+}
+
+#area-imagem-carta {
+    position: relative;
+    width: min(92vw, calc(90dvh * 1672 / 941));
+    aspect-ratio: 1672 / 941;
+}
+
+#imagem-carta {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#fechar {
+    position: absolute;
+    left: 24.8%;
+    top: 1.8%;
+    width: 5.8%;
+    height: 8.8%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#painel-gerador {
+    position: relative;
+    width: min(90vw, 760px);
+    min-height: 430px;
+    padding: 30px;
+    background: linear-gradient(145deg, #252525, #101010);
+    border: 3px solid #555;
+    border-radius: 8px;
+    box-shadow: 0 0 35px #000;
+    color: #ddd;
+}
+
+#topo-painel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #555;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+#topo-painel h2 {
+    margin: 0;
+    font-size: 21px;
+    letter-spacing: 2px;
+    color: #bbb;
+}
+
+#fechar-gerador {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+#instrucao {
+    color: #999;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+#placa {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    min-height: 220px;
+    padding: 15px;
+    background: #090909;
+    border: 2px solid #444;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.coluna-fios {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 15px;
+    z-index: 2;
+}
+
+.fio {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 38px;
+    padding: 5px 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #1a1a1a;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.fio:hover {
+    background: #303030;
+}
+
+.fio.selecionado {
+    border-color: #fff;
+    box-shadow: 0 0 10px #fff6;
+}
+
+.fio.conectado {
+    border-color: #777;
+    opacity: 0.65;
+    cursor: default;
+}
+
+.terminal {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    border: 3px solid #aaa;
+    border-radius: 50%;
+    background: #111;
+}
+
+.vermelho .terminal {
+    border-color: #e04444;
+}
+
+.azul .terminal {
+    border-color: #448ee0;
+}
+
+.amarelo .terminal {
+    border-color: #e5c34c;
+}
+
+.verde .terminal {
+    border-color: #55b875;
+}
+
+#fios-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#mensagem-puzzle {
+    min-height: 25px;
+    margin: 18px 0 10px;
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+}
+
+#controles-puzzle {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+#controles-puzzle button {
+    padding: 10px 20px;
+    background: #333;
+    border: 1px solid #666;
+    border-radius: 4px;
+    color: #ddd;
+    cursor: pointer;
+}
+
+#controles-puzzle button:hover {
+    background: #555;
+}
+
+#sucesso-gerador {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.94);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 25px;
+}
+
+#sucesso-gerador.aberto {
+    display: flex;
+}
+
+#sucesso-gerador h2 {
+    color: #8acb91;
+    letter-spacing: 2px;
+}
+
+#sucesso-gerador p {
+    color: #bbb;
+}
+
+#sucesso-gerador button {
+    margin-top: 15px;
+    padding: 10px 25px;
+    background: #344b37;
+    border: 1px solid #63836a;
+    color: white;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    #cena {
+        width: 100vw;
+    }
+
+    #modal-carta,
+    #modal-gerador {
+        padding: 8px;
+    }
+
+    #area-imagem-carta {
+        width: min(96vw, calc(85dvh * 1672 / 941));
+    }
+
+    #painel-gerador {
+        width: 96vw;
+        min-height: 400px;
+        padding: 15px;
+    }
+
+    #topo-painel h2 {
+        font-size: 16px;
+    }
+
+    #placa {
+        gap: 10px;
+        padding: 8px;
+    }
+
+    .fio {
+        gap: 5px;
+        padding: 5px;
+        font-size: 11px;
+    }
+}
+
+@media (max-height: 500px) {
+    #area-imagem-carta {
+        width: min(90vw, calc(90dvh * 1672 / 941));
+    }
+
+    #painel-gerador {
+        min-height: 0;
+        padding: 12px;
+    }
+
+    #placa {
+        min-height: 150px;
+    }
+
+    #instrucao {
+        margin-bottom: 10px;
+    }
+}
