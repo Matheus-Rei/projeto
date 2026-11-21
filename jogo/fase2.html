@@ -17,12 +17,12 @@
             alt="Cenário do laboratório"
         >
 
-        <button id="botao-carta" aria-label="Abrir carta"></button>
-        <button id="botao-gerador" aria-label="Examinar gerador"></button>
-        <button id="botao-escada" aria-label="Subir escadaria"></button>
+        <button id="botao-carta" onclick="abrirCarta()" aria-label="Abrir carta"></button>
+        <button id="botao-gerador" onclick="abrirGerador()" aria-label="Examinar gerador"></button>
+        <button id="botao-escada" onclick="subirEscada()" aria-label="Subir escadaria"></button>
     </main>
 
-    <div id="modal-carta">
+    <div id="modal-carta" onclick="fecharCartaFundo(event)">
         <div id="area-imagem-carta">
             <img
                 id="imagem-carta"
@@ -30,7 +30,7 @@
                 alt="Carta do cientista"
             >
 
-            <button id="fechar" aria-label="Fechar carta"></button>
+            <button id="fechar" onclick="fecharCarta()" aria-label="Fechar"></button>
         </div>
     </div>
 
@@ -39,7 +39,7 @@
 
             <div id="topo-painel">
                 <h2>PAINEL ELÉTRICO</h2>
-                <button id="fechar-gerador" aria-label="Fechar">X</button>
+                <button id="fechar-gerador" onclick="fecharGerador()" aria-label="Fechar">X</button>
             </div>
 
             <p id="instrucao">
@@ -50,44 +50,44 @@
                 <svg id="fios-svg"></svg>
 
                 <div class="coluna-fios" id="origens">
-                    <button class="fio vermelho" data-color="vermelho">
+                    <button class="fio vermelho" data-color="vermelho" onclick="selecionarFio(this)">
                         <span class="terminal"></span>
                         Fio 01
                     </button>
 
-                    <button class="fio azul" data-color="azul">
+                    <button class="fio azul" data-color="azul" onclick="selecionarFio(this)">
                         <span class="terminal"></span>
                         Fio 02
                     </button>
 
-                    <button class="fio amarelo" data-color="amarelo">
+                    <button class="fio amarelo" data-color="amarelo" onclick="selecionarFio(this)">
                         <span class="terminal"></span>
                         Fio 03
                     </button>
 
-                    <button class="fio verde" data-color="verde">
+                    <button class="fio verde" data-color="verde" onclick="selecionarFio(this)">
                         <span class="terminal"></span>
                         Fio 04
                     </button>
                 </div>
 
                 <div class="coluna-fios" id="destinos">
-                    <button class="fio verde" data-color="verde">
+                    <button class="fio verde" data-color="verde" onclick="conectarFio(this)">
                         Terminal D
                         <span class="terminal"></span>
                     </button>
 
-                    <button class="fio amarelo" data-color="amarelo">
+                    <button class="fio amarelo" data-color="amarelo" onclick="conectarFio(this)">
                         Terminal C
                         <span class="terminal"></span>
                     </button>
 
-                    <button class="fio vermelho" data-color="vermelho">
+                    <button class="fio vermelho" data-color="vermelho" onclick="conectarFio(this)">
                         Terminal A
                         <span class="terminal"></span>
                     </button>
 
-                    <button class="fio azul" data-color="azul">
+                    <button class="fio azul" data-color="azul" onclick="conectarFio(this)">
                         Terminal B
                         <span class="terminal"></span>
                     </button>
@@ -99,13 +99,13 @@
             </p>
 
             <div id="controles-puzzle">
-                <button id="reiniciar-puzzle">Reiniciar</button>
+                <button id="reiniciar-puzzle" onclick="resetarPuzzle()">Reiniciar</button>
             </div>
 
             <div id="sucesso-gerador">
                 <h2>ENERGIA RESTABELECIDA</h2>
                 <p>O gerador voltou a funcionar.</p>
-                <button id="continuar-gerador">Continuar</button>
+                <button id="continuar-gerador" onclick="continuarGerador()">Continuar</button>
             </div>
 
         </section>

@@ -1,11 +1,11 @@
 
 const botaoCarta = document.getElementById("botao-carta");
 const modalCarta = document.getElementById("modal-carta");
-const fecharCarta = document.getElementById("fechar");
+const fecharCartaBotao = document.getElementById("fechar");
 
 const botaoGerador = document.getElementById("botao-gerador");
 const modalGerador = document.getElementById("modal-gerador");
-const fecharGerador = document.getElementById("fechar-gerador");
+const fecharGeradorBotao = document.getElementById("fechar-gerador");
 
 const botaoEscada = document.getElementById("botao-escada");
 
@@ -30,46 +30,50 @@ const cores = {
     verde: "#55b875"
 };
 
-botaoCarta.addEventListener("click", () => {
+function abrirCarta() {
     modalCarta.classList.add("aberto");
-});
+}
 
-fecharCarta.addEventListener("click", () => {
+function fecharCarta() {
     modalCarta.classList.remove("aberto");
-});
+}
 
-modalCarta.addEventListener("click", (evento) => {
+function fecharCartaFundo(evento) {
     if (evento.target === modalCarta) {
-        modalCarta.classList.remove("aberto");
+        fecharCarta();
     }
-});
+}
 
-botaoGerador.addEventListener("click", () => {
+function abrirGerador() {
     modalGerador.classList.add("aberto");
 
     if (geradorAtivado) {
         sucesso.classList.add("aberto");
     }
-});
+}
 
-fecharGerador.addEventListener("click", () => {
+function fecharGerador() {
     modalGerador.classList.remove("aberto");
-});
+}
 
-continuar.addEventListener("click", () => {
+function continuarGerador() {
     modalGerador.classList.remove("aberto");
-});
+}
 
-botaoEscada.addEventListener("click", () => {
+function subirEscada() {
     window.location.href = "fase03.html";
-});
+}
 
 function selecionarFio(fio) {
-    if (geradorAtivado) return;
+    if (geradorAtivado) {
+        return;
+    }
 
     const cor = fio.dataset.color;
 
-    origens.forEach(item => item.classList.remove("selecionado"));
+    for (let i = 0; i < origens.length; i++) {
+        origens[i].classList.remove("selecionado");
+    }
 
     fioSelecionado = cor;
     fio.classList.add("selecionado");
@@ -78,7 +82,9 @@ function selecionarFio(fio) {
 }
 
 function conectarFio(terminal) {
-    if (!fioSelecionado || geradorAtivado) return;
+    if (!fioSelecionado || geradorAtivado) {
+        return;
+    }
 
     const corDestino = terminal.dataset.color;
 
@@ -92,7 +98,11 @@ function conectarFio(terminal) {
 
     atualizarPainel();
 
-    const total = Object.keys(conexoes).length;
+    let total = 0;
+
+    for (let cor in conexoes) {
+        total++;
+    }
 
     if (total === 4) {
         ativarGerador();
@@ -102,17 +112,26 @@ function conectarFio(terminal) {
 }
 
 function atualizarPainel() {
-    origens.forEach(fio => {
-        const conectado = Boolean(conexoes[fio.dataset.color]);
+    for (let i = 0; i < origens.length; i++) {
+        const cor = origens[i].dataset.color;
+        const conectado = conexoes[cor] !== undefined;
 
-        fio.classList.toggle("conectado", conectado);
-        fio.classList.remove("selecionado");
-    });
+        origens[i].classList.toggle("conectado", conectado);
+        origens[i].classList.remove("selecionado");
+    }
 
-    destinos.forEach(terminal => {
-        const conectado = Object.values(conexoes).includes(terminal.dataset.color);
-        terminal.classList.toggle("conectado", conectado);
-    });
+    for (let i = 0; i < destinos.length; i++) {
+        const cor = destinos[i].dataset.color;
+        let conectado = false;
+
+        for (let origem in conexoes) {
+            if (conexoes[origem] === cor) {
+                conectado = true;
+            }
+        }
+
+        destinos[i].classList.toggle("conectado", conectado);
+    }
 
     desenharFios();
 }
@@ -124,14 +143,27 @@ function desenharFios() {
 
     svg.setAttribute("viewBox", `0 0 ${area.width} ${area.height}`);
 
-    Object.entries(conexoes).forEach(([corOrigem, corDestino]) => {
-        const origem = [...origens].find(
-            fio => fio.dataset.color === corOrigem
-        );
+    for (let corOrigem in conexoes) {
+        const corDestino = conexoes[corOrigem];
 
-        const destino = [...destinos].find(
-            fio => fio.dataset.color === corDestino
-        );
+        let origem = null;
+        let destino = null;
+
+        for (let i = 0; i < origens.length; i++) {
+            if (origens[i].dataset.color === corOrigem) {
+                origem = origens[i];
+            }
+        }
+
+        for (let i = 0; i < destinos.length; i++) {
+            if (destinos[i].dataset.color === corDestino) {
+                destino = destinos[i];
+            }
+        }
+
+        if (origem === null || destino === null) {
+            continue;
+        }
 
         const pontoOrigem = origem.querySelector(".terminal").getBoundingClientRect();
         const pontoDestino = destino.querySelector(".terminal").getBoundingClientRect();
@@ -142,25 +174,18 @@ function desenharFios() {
         const x2 = pontoDestino.left + pontoDestino.width / 2 - area.left;
         const y2 = pontoDestino.top + pontoDestino.height / 2 - area.top;
 
-        const curva = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-        );
-
         const distancia = (x2 - x1) * 0.45;
 
-        curva.setAttribute(
-            "d",
-            `M ${x1} ${y1} C ${x1 + distancia} ${y1}, ${x2 - distancia} ${y2}, ${x2} ${y2}`
-        );
-
-        curva.setAttribute("stroke", cores[corOrigem]);
-        curva.setAttribute("stroke-width", "5");
-        curva.setAttribute("fill", "none");
-        curva.setAttribute("stroke-linecap", "round");
-
-        svg.appendChild(curva);
-    });
+        svg.innerHTML += `
+            <path
+                d="M ${x1} ${y1} C ${x1 + distancia} ${y1}, ${x2 - distancia} ${y2}, ${x2} ${y2}"
+                stroke="${cores[corOrigem]}"
+                stroke-width="5"
+                fill="none"
+                stroke-linecap="round"
+            ></path>
+        `;
+    }
 }
 
 function ativarGerador() {
@@ -169,13 +194,15 @@ function ativarGerador() {
 
     mensagem.textContent = "Todas as conexões foram realizadas.";
 
-    setTimeout(() => {
+    setTimeout(function() {
         sucesso.classList.add("aberto");
     }, 500);
 }
 
 function resetarPuzzle() {
-    if (geradorAtivado) return;
+    if (geradorAtivado) {
+        return;
+    }
 
     conexoes = {};
     fioSelecionado = null;
@@ -185,27 +212,11 @@ function resetarPuzzle() {
     mensagem.textContent = "Selecione uma ponta de fio.";
 }
 
-origens.forEach(fio => {
-    fio.addEventListener("click", () => {
-        if (!conexoes[fio.dataset.color]) {
-            selecionarFio(fio);
-        }
-    });
-});
+window.onresize = desenharFios;
 
-destinos.forEach(terminal => {
-    terminal.addEventListener("click", () => {
-        conectarFio(terminal);
-    });
-});
-
-reiniciar.addEventListener("click", resetarPuzzle);
-
-window.addEventListener("resize", desenharFios);
-
-document.addEventListener("keydown", (evento) => {
+document.onkeydown = function(evento) {
     if (evento.key === "Escape") {
-        modalCarta.classList.remove("aberto");
-        modalGerador.classList.remove("aberto");
+        fecharCarta();
+        fecharGerador();
     }
-});
+};

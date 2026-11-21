@@ -6,12 +6,18 @@ let ratosRestantes = 0;
 let ratosIniciados = false;
 
 function iniciarRatos() {
-    if (ratosIniciados) return;
+    if (ratosIniciados) {
+        return;
+    }
 
     ratosIniciados = true;
     ratosRestantes = 5;
 
-    areaRatos.querySelectorAll(".rato").forEach(rato => rato.remove());
+    const ratosAntigos = areaRatos.querySelectorAll(".rato");
+
+    for (let i = 0; i < ratosAntigos.length; i++) {
+        ratosAntigos[i].remove();
+    }
 
     avisoRatos.textContent = "CLIQUE NOS RATOS PARA ELIMINÁ-LOS!";
     avisoRatos.classList.add("visivel");
@@ -19,74 +25,89 @@ function iniciarRatos() {
     const largura = areaRatos.clientWidth;
     const altura = areaRatos.clientHeight;
 
+    let html = "";
+
     for (let i = 0; i < 5; i++) {
-        const rato = document.createElement("div");
-        rato.className = "rato";
+        const x = largura * 0.48 + Math.random() * 25;
+        const y = altura * 0.75 + Math.random() * 10;
 
-        const corpo = document.createElement("div");
-        corpo.className = "rato-corpo";
-
-        corpo.innerHTML = `
-            <span class="corpo"></span>
-            <span class="orelha"></span>
-            <span class="olho"></span>
-            <span class="focinho"></span>
-            <span class="cauda"></span>
-            <span class="patas"></span>
+        html += `
+            <div class="rato" onclick="clicarRato(this)" style="left: ${x}px; top: ${y}px;">
+                <div class="rato-corpo">
+                    <span class="corpo"></span>
+                    <span class="orelha"></span>
+                    <span class="olho"></span>
+                    <span class="focinho"></span>
+                    <span class="cauda"></span>
+                    <span class="patas"></span>
+                </div>
+                <span class="explosao"></span>
+            </div>
         `;
-
-        const explosao = document.createElement("span");
-        explosao.className = "explosao";
-
-        rato.appendChild(corpo);
-        rato.appendChild(explosao);
-
-        rato.style.left = (largura * 0.48 + Math.random() * 25) + "px";
-        rato.style.top = (altura * 0.75 + Math.random() * 10) + "px";
-
-        areaRatos.appendChild(rato);
-
-        let ativo = true;
-        let movimento;
-
-        function moverRato() {
-            if (!ativo) return;
-
-            const limiteX = Math.max(0, largura - 65);
-            const limiteY = Math.max(0, altura - 50);
-
-            rato.style.left = Math.random() * limiteX + "px";
-            rato.style.top = (altura * 0.48 + Math.random() * Math.max(0, limiteY - altura * 0.48)) + "px";
-
-            movimento = setTimeout(moverRato, 1000 + Math.random() * 1200);
-        }
-
-        movimento = setTimeout(moverRato, 500 + i * 250);
-
-        rato.addEventListener("click", function () {
-            if (!ativo) return;
-
-            ativo = false;
-            clearTimeout(movimento);
-
-            rato.classList.add("explodindo");
-            ratosRestantes--;
-
-            setTimeout(() => {
-                rato.remove();
-
-                if (ratosRestantes === 0) {
-                    finalizarRatos();
-                }
-            }, 300);
-        });
     }
+
+    areaRatos.innerHTML += html;
+
+    const ratos = areaRatos.querySelectorAll(".rato");
+
+    for (let i = 0; i < ratos.length; i++) {
+        ratos[i].dataset.ativo = "true";
+
+        ratos[i].movimento = setTimeout(function() {
+            moverRato(ratos[i]);
+        }, 500 + i * 250);
+    }
+}
+
+function moverRato(rato) {
+    if (rato.dataset.ativo !== "true") {
+        return;
+    }
+
+    const largura = areaRatos.clientWidth;
+    const altura = areaRatos.clientHeight;
+
+    const limiteX = Math.max(0, largura - 65);
+    const limiteY = Math.max(0, altura - 50);
+
+    rato.style.left = Math.random() * limiteX + "px";
+
+    rato.style.top = (
+        altura * 0.48 +
+        Math.random() * Math.max(0, limiteY - altura * 0.48)
+    ) + "px";
+
+    rato.movimento = setTimeout(function() {
+        moverRato(rato);
+    }, 1000 + Math.random() * 1200);
+}
+
+function clicarRato(rato) {
+    if (rato.dataset.ativo !== "true") {
+        return;
+    }
+
+    rato.dataset.ativo = "false";
+
+    clearTimeout(rato.movimento);
+
+    rato.classList.add("explodindo");
+
+    ratosRestantes--;
+
+    setTimeout(function() {
+        rato.remove();
+
+        if (ratosRestantes === 0) {
+            finalizarRatos();
+        }
+    }, 300);
 }
 
 function finalizarRatos() {
     avisoRatos.textContent = "TODOS OS RATOS FORAM ELIMINADOS!";
-    
-    setTimeout(() => {
+
+    setTimeout(function() {
         avisoRatos.classList.remove("visivel");
         ratosIniciados = false;
     }, 1800);

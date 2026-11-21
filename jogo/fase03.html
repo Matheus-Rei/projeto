@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fase do Elevador</title>
+
     <link rel="stylesheet" href="../CSS/ratos.css">
 
     <style>
@@ -135,7 +136,9 @@
 </head>
 
 <body>
+
     <div id="cena">
+
         <img
             id="imagem"
             src="../imagens_finais/fase01/Elevador Industrial Abandonado.png"
@@ -143,8 +146,11 @@
         >
 
         <button id="botao-elevador" onclick="abrirElevador()"></button>
+
         <button id="botao-voltar" onclick="voltarFase2()">VOLTAR</button>
+
         <button id="queijo" onclick="clicarQueijo()"></button>
+
         <button id="jornal" onclick="abrirManchete()"></button>
 
         <img
@@ -162,6 +168,7 @@
         <div id="area-ratos">
             <div id="aviso-ratos">CLIQUE NOS RATOS PARA ELIMINÁ-LOS!</div>
         </div>
+
     </div>
 
     <script src="../java.js/ratt.js"></script>
@@ -186,7 +193,7 @@
             if (!geradorAtivado) {
                 avisoEnergia.classList.add("aberto");
 
-                setTimeout(() => {
+                setTimeout(function() {
                     avisoEnergia.classList.remove("aberto");
                 }, 2500);
 
@@ -216,5 +223,6 @@
             fechar.style.display = "none";
         }
     </script>
+
 </body>
 </html>

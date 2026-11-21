@@ -73,30 +73,29 @@
     <div id="transicao"></div>
 
     <script>
-        let cont = 0;
-        let escrever = document.getElementById("unico");
+    let cont = 0;
+    let escrever = document.getElementById("unico");
 
-        function clicar() {
-            cont++;
+    function clicar() {
+        cont++;
 
-            if (cont == 1) {
-                escrever.src = "/imagens_finais/fase01/alavanca.png";
-            }
-
-            if (cont == 2) {
-                escrever.src = "/imagens_finais/fase01/aberta.png";
-
-                setTimeout(() => {
-                    document.getElementById("transicao").classList.add("ativa");
-
-                    setTimeout(() => {
-                        window.location.href = "fase2.html";
-                    }, 1500);
-
-                }, 800);
-            }
+        if (cont == 1) {
+            escrever.src = "/imagens_finais/fase01/alavanca.png";
         }
-    </script>
 
+        if (cont == 2) {
+            escrever.src = "/imagens_finais/fase01/aberta.png";
+
+            setTimeout(function() {
+                document.getElementById("transicao").classList.add("ativa");
+
+                setTimeout(function() {
+                    window.location.href = "fase2.html";
+                }, 1500);
+
+            }, 800);
+        }
+    }
+</script>
 </body>
 </html>
