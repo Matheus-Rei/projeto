@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fase 5 - O Cientista</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: #080808;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+
+        #cena {
+            position: relative;
+            width: min(100vw, calc(100dvh * 1648 / 928));
+            aspect-ratio: 1648 / 928;
+            overflow: hidden;
+            background: #080808;
+        }
+
+        #imagem-cientista {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+        }
+
+        /* BOTÕES DAS ESCOLHAS */
+
+        #interface {
+            position: absolute;
+            z-index: 3;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 5%;
+            background: linear-gradient(
+                transparent,
+                rgba(0, 0, 0, 0.95) 25%
+            );
+        }
+
+        #botoes-escolha {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .botao-escolha {
+            min-width: 190px;
+            padding: 12px 16px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #777;
+            border-radius: 5px;
+            color: white;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .botao-escolha:hover {
+            background: #292929;
+            transform: translateY(-3px);
+        }
+
+        #botao-vinganca {
+            border-color: #963d3d;
+        }
+
+        #botao-vinganca:hover {
+            background: #4a1717;
+        }
+
+        #botao-prisao {
+            border-color: #426c9c;
+        }
+
+        #botao-prisao:hover {
+            background: #172d4a;
+        }
+
+        #botao-ouvir {
+            border-color: #9b8845;
+        }
+
+        #botao-ouvir:hover {
+            background: #463d1a;
+        }
+
+        /* TELA DOS FINAIS */
+
+        #tela-final {
+            position: absolute;
+            z-index: 10;
+            inset: 0;
+            background: #000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 25px;
+            text-align: center;
+        }
+
+        #tela-final.aberta {
+            display: flex;
+        }
+
+        #titulo-final {
+            flex-shrink: 0;
+            color: #ccc;
+            font-size: clamp(20px, 2.5vw, 30px);
+            margin: 5px 0 12px;
+            letter-spacing: 2px;
+        }
+
+        #texto-final {
+            width: 100%;
+            max-width: 850px;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            color: #ddd;
+            font-size: clamp(14px, 1.4vw, 18px);
+            line-height: 1.5;
+            white-space: pre-line;
+            padding: 5px 12px 15px;
+            scrollbar-color: #555 #111;
+            scrollbar-width: thin;
+        }
+
+        #botao-final {
+            flex-shrink: 0;
+            margin-top: 10px;
+            padding: 10px 22px;
+            background: #111;
+            border: 1px solid #777;
+            border-radius: 4px;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        #botao-final:hover {
+            background: #333;
+        }
+
+        @media (max-width: 600px) {
+            #interface {
+                padding: 10px 3%;
+            }
+
+            #botoes-escolha {
+                gap: 7px;
+            }
+
+            .botao-escolha {
+                min-width: 125px;
+                padding: 9px;
+                font-size: 10px;
+            }
+
+            #tela-final {
+                padding: 12px;
+            }
+
+            #texto-final {
+                font-size: 13px;
+                line-height: 1.4;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="cena">
+
+        <img
+            id="imagem-cientista"
+            src="../imagens_finais/fase01/cin.png"
+            alt="O cientista"
+        >
+
+        <div id="interface">
+
+            <div id="botoes-escolha">
+
+                <button
+                    class="botao-escolha"
+                    id="botao-vinganca"
+                    onclick="escolherFinal('vinganca')"
+                >
+                    VINGAR A SOBRINHA
+                </button>
+
+                <button
+                    class="botao-escolha"
+                    id="botao-prisao"
+                    onclick="escolherFinal('prisao')"
+                >
+                    PRENDER O CIENTISTA
+                </button>
+
+                <button
+                    class="botao-escolha"
+                    id="botao-ouvir"
+                    onclick="escolherFinal('verdade')"
+                >
+                    OUVIR O QUE ELE TEM A DIZER
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="tela-final">
+
+            <h1 id="titulo-final"></h1>
+
+            <div id="texto-final"></div>
+
+            <button id="botao-final" onclick="reiniciarJogo()">
+                VOLTAR AO INÍCIO
+            </button>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const telaFinal = document.getElementById("tela-final");
+        const tituloFinal = document.getElementById("titulo-final");
+        const textoFinal = document.getElementById("texto-final");
+        const botaoFinal = document.getElementById("botao-final");
+
+        const imagemCientista = document.getElementById("imagem-cientista");
+        const interfaceEscolhas = document.getElementById("interface");
+
+        let intervaloTexto = null;
+
+        const finais = {
+
+            vinganca: {
+                titulo: "FINAL 1 — VINGANÇA",
+
+                texto: `O protagonista não respondeu.
+
+O cientista percebeu sua decisão tarde demais.
+
+Naquela sala, a história chegou ao fim de uma maneira que ninguém poderia desfazer.
+
+Semanas se passaram.
+
+O laboratório foi descoberto pelas autoridades. Durante a investigação, encontraram o corpo do cientista e evidências dos experimentos realizados naquele lugar.
+
+As investigações também levaram até o protagonista.
+
+As autoridades reconstruíram os acontecimentos e descobriram o que havia acontecido naquela sala.
+
+Ele foi localizado e preso.
+
+A sobrinha havia sido vingada, mas a justiça também alcançou aquele que decidiu fazer justiça com as próprias mãos.
+
+FIM.`
+            },
+
+            prisao: {
+                titulo: "FINAL 2 — JUSTIÇA",
+
+                texto: `O protagonista respirou fundo.
+
+Ele poderia acabar com tudo naquele instante, mas decidiu que o cientista deveria responder por seus crimes.
+
+Com as autoridades, todas as provas encontradas no laboratório foram reunidas.
+
+Os documentos, registros e evidências revelaram a extensão dos experimentos e dos sequestros.
+
+A investigação não parou no cientista.
+
+Seus comparsas, responsáveis por ajudá-lo a encobrir os sequestros e esconder as evidências, também foram identificados e presos.
+
+O laboratório foi fechado.
+
+As famílias das vítimas finalmente receberam respostas.
+
+O cientista foi levado para responder por tudo o que havia feito.
+
+Pela primeira vez, ninguém poderia esconder a verdade.
+
+A sobrinha não voltaria, mas os responsáveis seriam finalmente julgados.
+
+FIM.`
+            },
+
+            verdade: {
+                titulo: "FINAL 3 — A VERDADE",
+
+                texto: `O protagonista decidiu ouvir.
+
+O cientista começou a contar tudo.
+
+Falou sobre os experimentos, sobre os sequestros e sobre os motivos que o levaram a construir aquele laboratório.
+
+Cada nova revelação tornava a história mais difícil de suportar.
+
+O protagonista finalmente compreendeu a dimensão de tudo o que havia acontecido.
+
+As palavras do cientista o atingiram profundamente.
+
+Ele abaixou a cabeça, tomado pela emoção.
+
+Por alguns instantes, esqueceu onde estava e quem estava diante dele.
+
+O cientista percebeu a oportunidade.
+
+Quando o protagonista voltou a olhar para ele, já era tarde.
+
+O cientista o sedou e o levou para uma das salas do laboratório.
+
+Algum tempo depois, o protagonista despertou em um ambiente desconhecido.
+
+Havia equipamentos ao seu redor.
+
+O cientista observava tudo através do vidro.
+
+O protagonista havia deixado de ser um investigador.
+
+Agora, era uma de suas cobaias.
+
+FIM.`
+            }
+
+        };
+
+        function escolherFinal(tipo) {
+
+            if (intervaloTexto !== null) {
+                clearInterval(intervaloTexto);
+            }
+
+            const finalEscolhido = finais[tipo];
+
+            if (!finalEscolhido) {
+                return;
+            }
+
+            interfaceEscolhas.style.display = "none";
+            imagemCientista.style.display = "none";
+
+            telaFinal.classList.add("aberta");
+
+            tituloFinal.textContent = finalEscolhido.titulo;
+
+            escreverTexto(finalEscolhido.texto);
+        }
+
+        function escreverTexto(texto) {
+
+            textoFinal.textContent = "";
+
+            botaoFinal.style.display = "none";
+
+            let indice = 0;
+
+            intervaloTexto = setInterval(function() {
+
+                textoFinal.textContent += texto[indice];
+
+                indice++;
+
+                textoFinal.scrollTop = textoFinal.scrollHeight;
+
+                if (indice >= texto.length) {
+
+                    clearInterval(intervaloTexto);
+                    intervaloTexto = null;
+
+                    botaoFinal.style.display = "block";
+                }
+
+            }, 35);
+
+        }
+
+        function reiniciarJogo() {
+
+            sessionStorage.clear();
+
+            window.location.href = "../index.html";
+        }
+
+    </script>
+
+</body>
+</html>

@@ -10,6 +10,12 @@ function iniciarRatos() {
         return;
     }
 
+    if (sessionStorage.getItem("ratosEliminados") === "true") {
+        ratosIniciados = true;
+        avisoRatos.classList.remove("visivel");
+        return;
+    }
+
     ratosIniciados = true;
     ratosRestantes = 5;
 
@@ -105,10 +111,16 @@ function clicarRato(rato) {
 }
 
 function finalizarRatos() {
+    sessionStorage.setItem("ratosEliminados", "true");
+
     avisoRatos.textContent = "TODOS OS RATOS FORAM ELIMINADOS!";
+
+    if (typeof atualizarContinuar === "function") {
+        atualizarContinuar();
+    }
 
     setTimeout(function() {
         avisoRatos.classList.remove("visivel");
-        ratosIniciados = false;
+        ratosIniciados = true;
     }, 1800);
 }

@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -64,7 +64,7 @@
         #botao-voltar {
             z-index: 8;
             left: 2%;
-            top: 3%;
+            bottom: 3%;
             width: 100px;
             height: 40px;
             background: rgba(0, 0, 0, 0.8);
@@ -105,6 +105,30 @@
             width: 5%;
             height: 8%;
             display: none;
+        }
+
+        #continuar-fase4 {
+            position: absolute;
+            z-index: 9;
+            left: 50%;
+            bottom: 3%;
+            transform: translateX(-50%);
+            display: none;
+            width: auto;
+            height: auto;
+            padding: 9px 15px;
+            background: rgba(0, 0, 0, 0.75);
+            border: 1px solid #666;
+            border-radius: 4px;
+            color: #ccc;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+        #continuar-fase4:hover {
+            background: rgba(40, 40, 40, 0.95);
+            color: white;
         }
 
         #aviso-energia {
@@ -154,6 +178,10 @@
 
         <button id="jornal" onclick="abrirManchete()"></button>
 
+        <button id="continuar-fase4" onclick="irFase4()">
+            CONTINUAR PARA A FASE 4 →
+        </button>
+
         <img
             id="manchete"
             src="../imagens_finais/fase01/manchete.png"
@@ -173,12 +201,14 @@
     </div>
 
     <div id="inventario">
+
         <button id="botao-inventario" onclick="abrirInventario()">🎒</button>
 
         <div id="painel-inventario">
             <h3>INVENTÁRIO</h3>
             <div id="itens-inventario"></div>
         </div>
+
     </div>
 
     <script src="../java.js/ratt.js"></script>
@@ -186,6 +216,7 @@
 
     <script>
         const pasta = "../imagens_finais/fase01/";
+
         const imagem = document.getElementById("imagem");
         const botao = document.getElementById("botao-elevador");
         const queijo = document.getElementById("queijo");
@@ -193,11 +224,41 @@
         const manchete = document.getElementById("manchete");
         const fechar = document.getElementById("fechar");
         const avisoEnergia = document.getElementById("aviso-energia");
+        const continuar = document.getElementById("continuar-fase4");
 
-        const geradorAtivado = sessionStorage.getItem("geradorAtivado") === "true";
+        const geradorAtivado =
+            sessionStorage.getItem("geradorAtivado") === "true";
+
+        let elevadorAberto =
+            sessionStorage.getItem("elevadorAberto") === "true";
+
+        let mancheteAberta = false;
 
         function voltarFase2() {
             window.location.href = "fase2.html";
+        }
+
+        function irFase4() {
+            window.location.href = "fase4.html";
+        }
+
+        function atualizarContinuar() {
+            const queijoColetado =
+                sessionStorage.getItem("queijoColetado") === "true";
+
+            const jornalAberto =
+                sessionStorage.getItem("jornalAberto") === "true";
+
+            if (
+                elevadorAberto &&
+                queijoColetado &&
+                jornalAberto &&
+                !mancheteAberta
+            ) {
+                continuar.style.display = "block";
+            } else {
+                continuar.style.display = "none";
+            }
         }
 
         function abrirElevador() {
@@ -211,37 +272,109 @@
                 return;
             }
 
-            imagem.src = pasta + "Queijo brilhante no elevador sombrio.png";
+            elevadorAberto = true;
+
+            sessionStorage.setItem("elevadorAberto", "true");
+
             botao.style.display = "none";
 
-            if (!possuiItem("queijo")) {
-                queijo.style.display = "block";
+            atualizarCenaElevador();
+
+            if (typeof iniciarRatos === "function") {
+                iniciarRatos();
             }
 
+            atualizarContinuar();
+        }
+
+        function atualizarCenaElevador() {
+            if (!elevadorAberto) {
+                imagem.src = pasta + "Elevador Industrial Abandonado.png";
+                botao.style.display = "block";
+                queijo.style.display = "none";
+                jornal.style.display = "none";
+                return;
+            }
+
+            botao.style.display = "none";
             jornal.style.display = "block";
 
-            iniciarRatos();
+            const queijoColetado =
+                sessionStorage.getItem("queijoColetado") === "true";
+
+            if (queijoColetado || possuiItem("queijo")) {
+                imagem.src = pasta + "Elevador Industrial com Jornal O diário.png";
+                queijo.style.display = "none";
+
+                if (possuiItem("queijo")) {
+                    sessionStorage.setItem("queijoColetado", "true");
+                }
+            } else {
+                imagem.src = pasta + "Queijo brilhante no elevador sombrio.png";
+                queijo.style.display = "block";
+            }
         }
 
         function clicarQueijo() {
+            if (
+                sessionStorage.getItem("queijoColetado") === "true" ||
+                possuiItem("queijo")
+            ) {
+                return;
+            }
+
             adicionarItem({
                 nome: "queijo",
                 icone: "🧀"
             });
 
+            sessionStorage.setItem("queijoColetado", "true");
+
             imagem.src = pasta + "Elevador Industrial com Jornal O diário.png";
+
             queijo.style.display = "none";
+
+            atualizarContinuar();
         }
 
         function abrirManchete() {
+            mancheteAberta = true;
+
             manchete.style.display = "block";
             fechar.style.display = "block";
+
+            sessionStorage.setItem("jornalAberto", "true");
+
+            atualizarContinuar();
         }
 
         function fecharManchete() {
+            mancheteAberta = false;
+
             manchete.style.display = "none";
             fechar.style.display = "none";
+
+            atualizarContinuar();
         }
+
+        function restaurarFase() {
+            manchete.style.display = "none";
+            fechar.style.display = "none";
+
+            mancheteAberta = false;
+
+            atualizarCenaElevador();
+
+            if (elevadorAberto && typeof iniciarRatos === "function") {
+                iniciarRatos();
+            }
+
+            atualizarContinuar();
+            atualizarInventario();
+        }
+
+        restaurarFase();
+
     </script>
 
 </body>
