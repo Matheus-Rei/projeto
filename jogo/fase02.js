@@ -1,4 +1,3 @@
-
 const modalCarta = document.getElementById("modal-carta");
 const modalGerador = document.getElementById("modal-gerador");
 

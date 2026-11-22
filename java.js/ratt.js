@@ -1,4 +1,3 @@
-
 const areaRatos = document.getElementById("area-ratos");
 const avisoRatos = document.getElementById("aviso-ratos");
 
